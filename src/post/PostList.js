@@ -10,39 +10,64 @@ import {
   Icon,
   Dropdown
 } from "semantic-ui-react";
-import orderBy from 'lodash/orderBy';
 import { fetchPosts } from "./PostActions";
-import { sortPosts } from './PostUtil';
-
+import orderBy from 'lodash/orderBy';
 
 class PostList extends Component {
-	state = {
-		sortBy: 'voteScore'
-	}
+  state = {
+    sortBy: "voteScore"
+  };
 
   componentDidMount() {
     this.props.boundFetchPosts();
-	}
+  }
 
-	handleSort(event, data) {
-		event.preventDefault()
-		this.setState({
-			sortBy: data.value
-		})
-	}
+  sortPosts() {
+		const { sortBy } = this.state;
+		const { posts } = this.props;
+		let sortedPosts;
+
+
+    if (sortBy === "voteScore") {
+      sortedPosts = orderBy(posts, post => post.voteScore, "desc");
+    } else if (sortBy === "timestamp") {
+      sortedPosts = orderBy(posts, post => post.timestamp);
+    } else if (sortBy === "title") {
+      sortedPosts = orderBy(posts, post => post.title);
+    } else {
+      sortedPosts = posts;
+    }
+    return sortedPosts;
+  }
+
+  handleSort(event, data) {
+    event.preventDefault();
+    this.setState({
+      sortBy: data.value
+    });
+  }
 
   render() {
     const options = [
-      { key: "voteScore", icon: "list", text: "Vote Score", value: "voteScore" },
+      {
+        key: "voteScore",
+        icon: "list",
+        text: "Vote Score",
+        value: "voteScore"
+      },
       { key: "timestamp", icon: "list", text: "Timestamp", value: "timestamp" },
       { key: "title", icon: "list", text: "Title", value: "title" }
-		];
+    ];
 
-		const sortedPosts = sortPosts(this.props.posts, this.state.sortBy)
+    const sortedPosts = this.sortPosts();
 
     return (
-			<div>
-        <ul>{sortedPosts.map(post => <li key={post.id}>{JSON.stringify(post)}</li>)}</ul>
+      <div>
+        <ul>
+          {sortedPosts.map(post => (
+            <li key={post.id}>{JSON.stringify(post)}</li>
+          ))}
+        </ul>
 
         <Segment style={{ padding: "4em 0em" }} vertical>
           <Container text>
@@ -55,14 +80,14 @@ class PostList extends Component {
                   </Header>
                 </Grid.Column>
                 <Grid.Column>
-									<Button.Group floated="right">
-									<Button>Sort</Button>
+                  <Button.Group floated="right">
+                    <Button>Sort</Button>
                     <Dropdown
                       options={options}
                       floating
-											button
-											className='icon'
-											onChange={(event, data) => this.handleSort(event, data)}
+                      button
+                      className="icon"
+                      onChange={(event, data) => this.handleSort(event, data)}
                     />
                     <Button secondary>Add</Button>
                   </Button.Group>
@@ -93,14 +118,13 @@ class PostList extends Component {
 }
 
 function mapStateToProps(state) {
-const sortedPost = sortPosts(state.posts, state.sortBy)
   return {
-    posts: sortedPost
+    posts: state.posts
   };
 }
 
 const mapDispatchToProps = dispatch => ({
-	boundFetchPosts: () => dispatch(fetchPosts())
+  boundFetchPosts: () => dispatch(fetchPosts())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostList);

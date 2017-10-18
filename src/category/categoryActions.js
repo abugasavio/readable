@@ -3,7 +3,7 @@ import axios from 'axios';
 export const RECEIVE_CATEGORY_LIST = 'RECEIVE_CATEGORY_LIST';
 
 export const receiveCategoryList = posts => ({
-	type: RECEIVE_Category_LIST,
+	type: RECEIVE_CATEGORY_LIST,
 	posts
 })
 

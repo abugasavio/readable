@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Header, Icon, Container } from "semantic-ui-react";
+import { Header, Icon, Container } from "semantic-ui-react";
 
 const CategoryList = () => {
   return (

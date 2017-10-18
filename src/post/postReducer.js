@@ -1,4 +1,4 @@
-import { RECEIVE_POST_LIST, SORT_POSTS } from './PostActions';
+import { RECEIVE_POST_LIST } from './PostActions';
 
 function postReducer(state = [], action) {
 	switch (action.type) {
@@ -7,8 +7,6 @@ function postReducer(state = [], action) {
 				...state,
 				...action.posts
 			]
-		case SORT_POSTS:
-			return action.posts
 		default:
 			return state;
 	}

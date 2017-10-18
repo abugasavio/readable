@@ -1,6 +1,5 @@
 import React from 'react';
 import PostList from '../post/PostList';
-import Header from '../header/Header';
 import Layout from './Layout'
 import CategoryList from '../category/CategoryList';
 
