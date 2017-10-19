@@ -10,8 +10,11 @@ import {
   Icon,
   Dropdown
 } from "semantic-ui-react";
+import orderBy from "lodash/orderBy";
+import { Link } from 'react-router-dom';
 import { fetchPosts } from "./PostActions";
-import orderBy from 'lodash/orderBy';
+import AddPost from './AddPost';
+
 
 class PostList extends Component {
   state = {
@@ -23,10 +26,9 @@ class PostList extends Component {
   }
 
   sortPosts() {
-		const { sortBy } = this.state;
-		const { posts } = this.props;
-		let sortedPosts;
-
+    const { sortBy } = this.state;
+    const { posts } = this.props;
+    let sortedPosts;
 
     if (sortBy === "voteScore") {
       sortedPosts = orderBy(posts, post => post.voteScore, "desc");
@@ -89,7 +91,7 @@ class PostList extends Component {
                       className="icon"
                       onChange={(event, data) => this.handleSort(event, data)}
                     />
-                    <Button secondary>Add</Button>
+                    <Button secondary><Link to="/add-post" component={AddPost}>Add Post</Link></Button>
                   </Button.Group>
                 </Grid.Column>
               </Grid.Row>
