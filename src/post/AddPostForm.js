@@ -64,7 +64,7 @@ class AddPostForm extends Component {
             style={{ minHeight: 200 }}
             value={data.body}
             onChange={this.onChange}
-            error={!!errors.post}
+            error={!!errors.body}
           />
           {errors.body && <InlineError text={errors.body} />}
         </Form.Field>
