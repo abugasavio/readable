@@ -5,13 +5,12 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { BrowserRouter, Route } from "react-router-dom";
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from "redux-devtools-extension";
 import "semantic-ui-css/semantic.min.css";
-import AddPost from './post/AddPost';
+import AddPost from "./post/AddPost";
 import registerServiceWorker from "./registerServiceWorker";
 import App from "./app/App";
 import rootReducer from "./rootReducer";
-
 
 const store = createStore(
   rootReducer,
@@ -19,11 +18,11 @@ const store = createStore(
 );
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={store}>
-	  <App />
-    </Provider>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );
 

@@ -1,8 +1,13 @@
 import React from 'react';
-import PostList from '../post/PostList';
-import Layout from './Layout'
-import CategoryList from '../category/CategoryList';
+import { Route } from 'react-router-dom';
+import HomePage from './HomePage';
+import AddPostPage  from './AddPostPage'
 
-const App = () => <Layout><PostList /><CategoryList /></Layout>
+const App = () => (
+	<div>
+		<Route path="/" exact component={HomePage} />
+		<Route path="/add-post" component={AddPostPage} />
+	</div>
+)
 
 export default App;
