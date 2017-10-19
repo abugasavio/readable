@@ -13,7 +13,7 @@ import {
 import orderBy from "lodash/orderBy";
 import { Link } from 'react-router-dom';
 import { fetchPosts } from "./PostActions";
-import AddPost from './AddPost';
+import AddPostPage from '../app/AddPostPage';
 
 
 class PostList extends Component {
@@ -91,7 +91,7 @@ class PostList extends Component {
                       className="icon"
                       onChange={(event, data) => this.handleSort(event, data)}
                     />
-                    <Button secondary><Link to="/add-post" component={AddPost}>Add Post</Link></Button>
+                    <Button secondary><Link to="/add-post" component={AddPostPage}>Add Post</Link></Button>
                   </Button.Group>
                 </Grid.Column>
               </Grid.Row>

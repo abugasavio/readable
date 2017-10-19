@@ -7,7 +7,6 @@ import logger from "redux-logger";
 import { BrowserRouter, Route } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension";
 import "semantic-ui-css/semantic.min.css";
-import AddPost from "./post/AddPost";
 import registerServiceWorker from "./registerServiceWorker";
 import App from "./app/App";
 import rootReducer from "./rootReducer";
