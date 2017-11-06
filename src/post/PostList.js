@@ -1,24 +1,15 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import {
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Header,
-  Segment,
-  Icon,
-  Dropdown
-} from "semantic-ui-react";
-import orderBy from "lodash/orderBy";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Button, Container, Divider, Grid, Header, Segment, Icon, Dropdown } from 'semantic-ui-react';
+import orderBy from 'lodash/orderBy';
+import values from 'lodash/values'
 import { Link } from 'react-router-dom';
-import { fetchPosts } from "./PostActions";
+import { fetchPosts } from './PostActions';
 import AddPostPage from '../app/AddPostPage';
-
 
 class PostList extends Component {
   state = {
-    sortBy: "voteScore"
+    sortBy: 'voteScore'
   };
 
   componentDidMount() {
@@ -30,12 +21,12 @@ class PostList extends Component {
     const { posts } = this.props;
     let sortedPosts;
 
-    if (sortBy === "voteScore") {
-      sortedPosts = orderBy(posts, post => post.voteScore, "desc");
-    } else if (sortBy === "timestamp") {
+    if (sortBy === 'voteScore') {
+      sortedPosts = orderBy(posts, post => post.voteScore, 'desc');
+    } else if (sortBy === 'timestamp') {
       sortedPosts = orderBy(posts, post => post.timestamp);
-    } else if (sortBy === "title") {
-      sortedPosts = orderBy(posts, post => post.title);
+    } else if (sortBy === 'title') {
+			sortedPosts = orderBy(posts, post => post.title.toLowerCase());
     } else {
       sortedPosts = posts;
     }
@@ -52,63 +43,46 @@ class PostList extends Component {
   render() {
     const options = [
       {
-        key: "voteScore",
-        icon: "list",
-        text: "Vote Score",
-        value: "voteScore"
+        key: 'voteScore',
+        text: 'Vote Score',
+        value: 'voteScore'
       },
-      { key: "timestamp", icon: "list", text: "Timestamp", value: "timestamp" },
-      { key: "title", icon: "list", text: "Title", value: "title" }
+      { key: 'timestamp', text: 'Timestamp', value: 'timestamp' },
+      { key: 'title', text: 'Title', value: 'title' }
     ];
 
     const sortedPosts = this.sortPosts();
 
     return (
       <div>
-        <ul>
-          {sortedPosts.map(post => (
-            <li key={post.id}>{JSON.stringify(post)}</li>
-          ))}
-        </ul>
+        <ul>{sortedPosts.map(post => <li key={post.id}>{JSON.stringify(post)}</li>)}</ul>
 
-        <Segment style={{ padding: "4em 0em" }} vertical>
+        <Segment style={{ padding: '2em 0em' }} vertical>
           <Container text>
-            <Grid columns={2} style={{ paddingBottom: "4em" }}>
+            <Grid columns={2} style={{ paddingBottom: '2em' }}>
               <Grid.Row>
                 <Grid.Column>
-                  <Header as="h1" style={{ color: "#f47835" }}>
-                    <Icon name="list" />
+                  <Header as="h1" color='blue'>
+                    <Icon name="check" color="blue" />
                     <Header.Content>Post List</Header.Content>
                   </Header>
                 </Grid.Column>
                 <Grid.Column>
-                  <Button.Group floated="right">
-                    <Button>Sort</Button>
-                    <Dropdown
-                      options={options}
-                      floating
-                      button
-                      className="icon"
-                      onChange={(event, data) => this.handleSort(event, data)}
-                    />
-                    <Button secondary><Link to="/add-post" component={AddPostPage}>Add Post</Link></Button>
-                  </Button.Group>
+                  <Dropdown options={options} onChange={(event, data) => this.handleSort(event, data)} text="sort" />
                 </Grid.Column>
               </Grid.Row>
             </Grid>
 
             {sortedPosts.map(post => (
-              <div>
-                <Header as="h2" style={{ fontSize: "2em", color: "#8ec127" }}>
+              <div key={post.id}>
+                <Header as="h2" color="pink">
                   {post.title}
                   <Header.Subheader>
                     Written by {post.author} on {Date(post.timestamp)}
                   </Header.Subheader>
-                  <Header.Subheader style={{ paddingTop: "2px" }}>
-                    Votes Received: {post.voteScore}
-                  </Header.Subheader>
+                  <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {post.voteScore}</Header.Subheader>
                 </Header>
-                <p style={{ fontSize: "1.33em" }}>{post.body}</p>
+                <p style={{ fontSize: '1.33em' }}>{post.body}</p>
                 <Divider />
               </div>
             ))}
@@ -121,7 +95,7 @@ class PostList extends Component {
 
 function mapStateToProps(state) {
   return {
-    posts: state.posts
+    posts: values(state.posts)
   };
 }
 

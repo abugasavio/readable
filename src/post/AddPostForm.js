@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Form, Button, TextArea } from "semantic-ui-react";
-import PropTypes from "prop-types";
-import InlineError from "../app/InlineError";
+import React, { Component } from 'react';
+import { Form, Button, TextArea } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import InlineError from '../app/InlineError';
 
 class AddPostForm extends Component {
   state = {
     data: {
-      title: "",
-      body: "",
-      author: "",
-      category: "",
+      title: '',
+      body: '',
+      author: '',
+      category: '',
       deleted: false,
       voteScore: 0
     },
@@ -33,8 +33,8 @@ class AddPostForm extends Component {
 
   validate = data => {
     const errors = {};
-    if (!data.title) errors.title = "Title cannot be blank";
-    if (!data.body) errors.body = "Post body cannot be blank";
+    if (!data.title) errors.title = 'Title cannot be blank';
+    if (!data.body) errors.body = 'Post body cannot be blank';
     return errors;
   };
 
@@ -44,14 +44,7 @@ class AddPostForm extends Component {
       <Form onSubmit={this.onSubmit}>
         <Form.Field error={!!errors.title}>
           <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            placeholder="Post title"
-            value={data.title}
-            name="title"
-            onChange={this.onChange}
-          />
+          <input type="text" id="title" placeholder="Post title" value={data.title} name="title" onChange={this.onChange} />
           {errors.title && <InlineError text={errors.title} />}
         </Form.Field>
         <Form.Field error={!!errors.post}>
@@ -70,14 +63,7 @@ class AddPostForm extends Component {
         </Form.Field>
         <Form.Field error={!!errors.author}>
           <label htmlFor="author">Name of Author</label>
-          <input
-            type="text"
-            id="author"
-            placeholder="Author"
-            value={data.author}
-            name="author"
-            onChange={this.onChange}
-          />
+          <input type="text" id="author" placeholder="Author" value={data.author} name="author" onChange={this.onChange} />
           {errors.author && <InlineError text={errors.author} />}
         </Form.Field>
         <Button primary>Add Post</Button>
