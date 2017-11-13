@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Container, Divider, Grid, Header, Segment, Icon, Dropdown } from 'semantic-ui-react';
+import { Container, Divider, Grid, Header, Segment, Icon, Dropdown } from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
 import values from 'lodash/values'
-import { Link } from 'react-router-dom';
 import { fetchPosts } from './PostActions';
-import AddPostPage from '../app/AddPostPage';
 
 class PostList extends Component {
   state = {
@@ -51,7 +49,7 @@ class PostList extends Component {
       { key: 'title', text: 'Title', value: 'title' }
     ];
 
-    const sortedPosts = this.sortPosts();
+		const sortedPosts = this.sortPosts();
 
     return (
       <div>
@@ -93,9 +91,10 @@ class PostList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+	console.log(ownProps)
   return {
-    posts: values(state.posts)
+    posts:  values(state.posts).filter(post => post.category === ownProps.category)
   };
 }
 

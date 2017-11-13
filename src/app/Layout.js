@@ -17,11 +17,14 @@ const Layout = props => (
         </Menu.Item>
         <Dropdown item simple text="Categories">
           <Dropdown.Menu>
-            {props.categories.map(category => (
-              <Dropdown.Item as={Link} to={category.path}>
-                {startCase(category.name)}
-              </Dropdown.Item>
-            ))}
+            {props.categories.map(category => {
+              const url = `/category/${category.path}`;
+              return (
+                <Dropdown.Item as={Link} to={url}>
+                  {startCase(category.name)}
+                </Dropdown.Item>
+              );
+            })}
           </Dropdown.Menu>
         </Dropdown>
         <Menu.Menu position="right">
