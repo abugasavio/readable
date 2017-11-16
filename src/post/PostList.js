@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Divider, Grid, Header, Segment, Icon, Dropdown } from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
-import values from 'lodash/values'
+import values from 'lodash/values';
 import { fetchPosts } from './PostActions';
 
 class PostList extends Component {
@@ -24,7 +24,7 @@ class PostList extends Component {
     } else if (sortBy === 'timestamp') {
       sortedPosts = orderBy(posts, post => post.timestamp);
     } else if (sortBy === 'title') {
-			sortedPosts = orderBy(posts, post => post.title.toLowerCase());
+      sortedPosts = orderBy(posts, post => post.title.toLowerCase());
     } else {
       sortedPosts = posts;
     }
@@ -49,7 +49,7 @@ class PostList extends Component {
       { key: 'title', text: 'Title', value: 'title' }
     ];
 
-		const sortedPosts = this.sortPosts();
+    const sortedPosts = this.sortPosts();
 
     return (
       <div>
@@ -60,7 +60,7 @@ class PostList extends Component {
             <Grid columns={2} style={{ paddingBottom: '2em' }}>
               <Grid.Row>
                 <Grid.Column>
-                  <Header as="h1" color='blue'>
+                  <Header as="h1" color="blue">
                     <Icon name="check" color="blue" />
                     <Header.Content>Post List</Header.Content>
                   </Header>
@@ -92,9 +92,8 @@ class PostList extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-	console.log(ownProps)
   return {
-    posts:  values(state.posts).filter(post => post.category === ownProps.category)
+    posts: (ownProps.category && values(state.posts.postList).filter(post => post.category === ownProps.category)) || values(state.posts.postList)
   };
 }
 

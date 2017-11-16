@@ -37,7 +37,7 @@ const Layout = props => (
         </Menu.Menu>
       </Container>
     </Menu>
-    <Container text style={{ marginTop: '7em' }}>
+    <Container text style={{ marginTop: '7em', minHeight: '600px' }}>
       {props.children}
     </Container>
 
