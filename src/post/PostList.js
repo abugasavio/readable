@@ -1,13 +1,15 @@
+/* eslint jsx-a11y/anchor-is-valid: off */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Divider, Grid, Header, Segment, Icon, Dropdown } from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
 import values from 'lodash/values';
+import { Link } from 'react-router-dom';
 import { fetchPosts } from './PostActions';
 
 class PostList extends Component {
   state = {
-    sortBy: 'voteScore'
+    sortBy: 'voteScore',
   };
 
   componentDidMount() {
@@ -34,7 +36,7 @@ class PostList extends Component {
   handleSort(event, data) {
     event.preventDefault();
     this.setState({
-      sortBy: data.value
+      sortBy: data.value,
     });
   }
 
@@ -43,10 +45,10 @@ class PostList extends Component {
       {
         key: 'voteScore',
         text: 'Vote Score',
-        value: 'voteScore'
+        value: 'voteScore',
       },
       { key: 'timestamp', text: 'Timestamp', value: 'timestamp' },
-      { key: 'title', text: 'Title', value: 'title' }
+      { key: 'title', text: 'Title', value: 'title' },
     ];
 
     const sortedPosts = this.sortPosts();
@@ -74,7 +76,7 @@ class PostList extends Component {
             {sortedPosts.map(post => (
               <div key={post.id}>
                 <Header as="h2" color="pink">
-                  {post.title}
+                  <Link to={`/post/${post.id}`}>{post.title}</Link>
                   <Header.Subheader>
                     Written by {post.author} on {Date(post.timestamp)}
                   </Header.Subheader>
@@ -93,12 +95,12 @@ class PostList extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    posts: (ownProps.category && values(state.posts.postList).filter(post => post.category === ownProps.category)) || values(state.posts.postList)
+    posts: (ownProps.category && values(state.posts.postList).filter(post => post.category === ownProps.category)) || values(state.posts.postList),
   };
 }
 
 const mapDispatchToProps = dispatch => ({
-  boundFetchPosts: () => dispatch(fetchPosts())
+  boundFetchPosts: () => dispatch(fetchPosts()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostList);
