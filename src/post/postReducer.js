@@ -1,9 +1,10 @@
 import mapKeys from 'lodash/mapKeys';
-import { RECEIVE_POST_LIST, RECEIVE_CURRENT_POST } from './PostActions';
+import { RECEIVE_POST_LIST, RECEIVE_CURRENT_POST, RECEIVE_POST_COMMENTS } from './PostActions';
 
 const initialState = {
   posts: {},
-  currentPost: {}
+  currentPost: {},
+  postComments: {}
 };
 
 function postListReducer(state = initialState.posts, action) {
@@ -22,15 +23,26 @@ function postListReducer(state = initialState.posts, action) {
 function currentPostReducer(state = initialState.currentPost, action) {
   switch (action.type) {
     case RECEIVE_CURRENT_POST:
-      return {...state, ...action.post}
+      return { ...state, ...action.post };
     default:
       return state;
   }
 }
 
-const postReducer = (state=initialState, action) => ({
+function postCommentsReducer(state = initialState.postComments, action) {
+  switch (action.type) {
+    case RECEIVE_POST_COMMENTS:
+      const newComments = mapKeys(action.comments, 'id');
+      return { ...state, ...newComments };
+    default:
+      return state;
+  }
+}
+
+const postReducer = (state = initialState, action) => ({
   postList: postListReducer(state.posts, action),
-  currentPost: currentPostReducer(state.currentPost, action)
+  currentPost: currentPostReducer(state.currentPost, action),
+  currentPostComments: postCommentsReducer(state.postComments, action)
 });
 
 export default postReducer;

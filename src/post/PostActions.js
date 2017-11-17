@@ -3,6 +3,7 @@ import uuidv4 from 'uuid/v4';
 
 export const RECEIVE_POST_LIST = 'RECEIVE_POST_LIST';
 export const RECEIVE_CURRENT_POST = 'RECEIVE_CURRENT_POST'
+export const RECEIVE_POST_COMMENTS = 'RECEIVE_POST_COMMENTS'
 
 export const receivePostList = posts => ({
   type: RECEIVE_POST_LIST,
@@ -12,6 +13,11 @@ export const receivePostList = posts => ({
 export const receiveCurrentPost = post => ({
 	type: RECEIVE_CURRENT_POST,
 	post
+})
+
+export const receivePostComments = comments => ({
+  type: RECEIVE_POST_COMMENTS,
+  comments
 })
 
 export const fetchPosts = () => dispatch =>
@@ -40,5 +46,15 @@ export const createPost = data => dispatch =>
 export const fetchPost = id => dispatch =>
 		axios
 			.get(`/posts/${id}`, { headers: { Authorization: 'saviojoseph' } })
-			.then(res => dispatch(receiveCurrentPost(res.data)))
+      .then(res => dispatch(receiveCurrentPost(res.data)))
 
+export const fetchComments = postId => {
+  return dispatch => { fetch(`/posts/${postId}/comments`, {
+    method:'GET',
+    headers: {
+      'Authorization': 'saviojoseph'
+    }
+  }).then(res => res.json())
+  .then(payload => dispatch(receivePostComments(payload)))
+}
+}

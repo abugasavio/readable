@@ -10,7 +10,7 @@ const PostListPage = ({ match }) => (
 );
 
 PostListPage.propTypes = {
-  match: PropTypes.object
+  match: PropTypes.object.isRequired // eslint-disable-line react/forbid-prop-types
 };
 
 export default PostListPage;
