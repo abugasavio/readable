@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { Container, Header, Comment, Form, Button } from 'semantic-ui-react';
 import values from 'lodash/values';
 import Layout from '../app/Layout';
-import { fetchPost, fetchComments } from './PostActions';
-import CommentBlock from './CommentBlock';
+import { fetchPost } from './PostActions';
+import CommentBlock from '../comment/CommentBlock';
+import { fetchComments } from '../comment/CommentActions';
 
 class PageDetail extends Component {
   componentDidMount() {
@@ -48,7 +49,7 @@ PageDetail.propTypes = {
 
 const mapStateToProps = state => ({
   post: state.posts.currentPost,
-  comments: values(state.posts.currentPostComments),
+  comments: values(state.comments),
 });
 
 const mapDispatchToProps = dispatch => ({

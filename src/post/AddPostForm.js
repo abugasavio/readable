@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, TextArea } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import InlineError from '../app/InlineError';
 
@@ -13,7 +13,6 @@ class AddPostForm extends Component {
       deleted: false,
       voteScore: 0
     },
-    loading: false,
     errors: {}
   };
 
@@ -48,8 +47,8 @@ class AddPostForm extends Component {
           {errors.title && <InlineError text={errors.title} />}
         </Form.Field>
         <Form.Field error={!!errors.post}>
-          <label htmlFor="post">Post Title</label>
-          <TextArea
+          <Form.TextArea
+            label='Post Title'
             id="post"
             autoHeight
             name="body"

@@ -2,23 +2,17 @@ import axios from 'axios';
 import uuidv4 from 'uuid/v4';
 
 export const RECEIVE_POST_LIST = 'RECEIVE_POST_LIST';
-export const RECEIVE_CURRENT_POST = 'RECEIVE_CURRENT_POST'
-export const RECEIVE_POST_COMMENTS = 'RECEIVE_POST_COMMENTS'
+export const RECEIVE_CURRENT_POST = 'RECEIVE_CURRENT_POST';
 
 export const receivePostList = posts => ({
   type: RECEIVE_POST_LIST,
-  posts
+  posts,
 });
 
 export const receiveCurrentPost = post => ({
-	type: RECEIVE_CURRENT_POST,
-	post
-})
-
-export const receivePostComments = comments => ({
-  type: RECEIVE_POST_COMMENTS,
-  comments
-})
+  type: RECEIVE_CURRENT_POST,
+  post,
+});
 
 export const fetchPosts = () => dispatch =>
   axios
@@ -35,26 +29,12 @@ export const createPost = data => dispatch =>
         timestamp: Date.now(),
         title: data.title,
         body: data.body,
-        author: data.author
+        author: data.author,
       },
-      { headers: { Authorization: 'saviojoseph' } }
+      { headers: { Authorization: 'saviojoseph' } },
     )
     .then(() => dispatch(fetchPosts()))
     .catch(err => console.log(err));
 
-
 export const fetchPost = id => dispatch =>
-		axios
-			.get(`/posts/${id}`, { headers: { Authorization: 'saviojoseph' } })
-      .then(res => dispatch(receiveCurrentPost(res.data)))
-
-export const fetchComments = postId => {
-  return dispatch => { fetch(`/posts/${postId}/comments`, {
-    method:'GET',
-    headers: {
-      'Authorization': 'saviojoseph'
-    }
-  }).then(res => res.json())
-  .then(payload => dispatch(receivePostComments(payload)))
-}
-}
+  axios.get(`/posts/${id}`, { headers: { Authorization: 'saviojoseph' } }).then(res => dispatch(receiveCurrentPost(res.data)));
