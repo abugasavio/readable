@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Container, Header, Comment } from 'semantic-ui-react';
+import { Container, Header, Comment, Segment, Button, Icon } from 'semantic-ui-react';
 import values from 'lodash/values';
+import { Link } from 'react-router-dom';
 import Layout from '../app/Layout';
 import { fetchPost } from './PostActions';
 import CommentBlock from '../comment/CommentBlock';
@@ -16,20 +17,38 @@ class PageDetail extends Component {
   }
 
   render() {
+    const postId = this.props.match.params.id;
     return (
       <Layout>
         <Container text style={{ marginBottom: '50px' }}>
-          <Header as="h1" color="blue">
-            {this.props.post.title}
-          </Header>
+          <Segment clearing basic>
+            <Button.Group floated="right">
+              <Button color="pink">
+                <Icon name="edit" />
+                <Link to={`/edit-post/${postId}`} role={Button}>
+                  Edit
+                </Link>
+              </Button>
+              <Button color="pink">
+                <Icon name="remove circle" />
+                <Link to="" role={Button}>
+                  Delete
+                </Link>
+              </Button>
+            </Button.Group>
+          </Segment>
+          <Segment clearing basic>
+            <Header as="h1" color="blue" floated="left">
+              {this.props.post.title}
+            </Header>
+          </Segment>
           <p>{this.props.post.body}</p>
-          <p>{JSON.stringify(this.props.comments)}</p>
           <Comment.Group>
             <Header as="h3" dividing>
               Comments
             </Header>
             {this.props.comments.map(comment => <CommentBlock key={comment.id} {...comment} />)}
-            <AddCommentForm submit={createComment} postId={this.props.match.params.id}/>
+            <AddCommentForm submit={createComment} postId={this.props.match.params.id} />
           </Comment.Group>
         </Container>
       </Layout>
@@ -52,7 +71,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   boundFetchPost: id => dispatch(fetchPost(id)),
-  boundFetchComments: id => dispatch(fetchComments(id))
+  boundFetchComments: id => dispatch(fetchComments(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageDetail);
