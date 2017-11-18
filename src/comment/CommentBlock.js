@@ -16,8 +16,8 @@ const CommentBlock = ({ author, timestamp, body }) => (
 
 CommentBlock.propTypes = {
   author: PropTypes.string.isRequired,
-  timestamp: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
+  timestamp: PropTypes.number.isRequired,
+  body: PropTypes.string.isRequired
 };
 
 export default CommentBlock;

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Container, Header, Comment, Form, Button } from 'semantic-ui-react';
+import { Container, Header, Comment } from 'semantic-ui-react';
 import values from 'lodash/values';
 import Layout from '../app/Layout';
 import { fetchPost } from './PostActions';
 import CommentBlock from '../comment/CommentBlock';
-import { fetchComments } from '../comment/CommentActions';
+import AddCommentForm from '../comment/AddCommentForm';
+import { fetchComments, createComment } from '../comment/CommentActions';
 
 class PageDetail extends Component {
   componentDidMount() {
@@ -27,11 +28,8 @@ class PageDetail extends Component {
             <Header as="h3" dividing>
               Comments
             </Header>
-            {this.props.comments.map(comment => <CommentBlock {...comment} />)}
-            <Form reply>
-              <Form.TextArea />
-              <Button content="Add Reply" labelPosition="left" icon="edit" primary />
-            </Form>
+            {this.props.comments.map(comment => <CommentBlock key={comment.id} {...comment} />)}
+            <AddCommentForm submit={createComment} postId={this.props.match.params.id}/>
           </Comment.Group>
         </Container>
       </Layout>
@@ -54,7 +52,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   boundFetchPost: id => dispatch(fetchPost(id)),
-  boundFetchComments: id => dispatch(fetchComments(id)),
+  boundFetchComments: id => dispatch(fetchComments(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageDetail);
