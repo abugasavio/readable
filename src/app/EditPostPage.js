@@ -33,7 +33,6 @@ class EditPostPage extends React.Component {
   };
 
 
-
   render() {
     const postId = this.props.match.params.id;
 

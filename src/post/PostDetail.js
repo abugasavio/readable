@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Container, Header, Comment, Segment, Button, Icon } from 'semantic-ui-react';
+import { Container, Header, Comment, Segment, Button, Icon, Modal } from 'semantic-ui-react';
 import values from 'lodash/values';
 import { Link } from 'react-router-dom';
 import Layout from '../app/Layout';
@@ -23,18 +23,26 @@ class PageDetail extends Component {
         <Container text style={{ marginBottom: '50px' }}>
           <Segment clearing basic>
             <Button.Group floated="right">
-              <Button color="pink">
+              <Button color="green">
                 <Icon name="edit" />
                 <Link to={`/edit-post/${postId}`} role={Button}>
                   Edit
                 </Link>
               </Button>
-              <Button color="pink">
-                <Icon name="remove circle" />
-                <Link to="" role={Button}>
-                  Delete
-                </Link>
-              </Button>
+              <Modal trigger={<Button color='red'><Icon name="remove circle" />Basic Modal</Button>} basic size="small">
+                <Header icon="remove" content="Delete Post" />
+                <Modal.Content>
+                  <p>Are you sure you want to delete this post?</p>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button basic color="red" inverted>
+                    <Icon name="remove" /> No
+                  </Button>
+                  <Button color="green" inverted>
+                    <Icon name="checkmark" /> Yes
+                  </Button>
+                </Modal.Actions>
+              </Modal>
             </Button.Group>
           </Segment>
           <Segment clearing basic>

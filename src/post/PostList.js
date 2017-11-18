@@ -55,8 +55,6 @@ class PostList extends Component {
 
     return (
       <div>
-        <ul>{sortedPosts.map(post => <li key={post.id}>{JSON.stringify(post)}</li>)}</ul>
-
         <Segment style={{ padding: '2em 0em' }} vertical>
           <Container text>
             <Grid columns={2} style={{ paddingBottom: '2em' }}>
