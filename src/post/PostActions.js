@@ -45,7 +45,7 @@ export const editPost = (postId, data) => dispatch =>
           body: data.body
         },
         { headers: { Authorization: 'saviojoseph' } }
-      )
+      ).then(res => console.log(res))
 
 export const fetchPost = id => dispatch =>
   axios.get(`/posts/${id}`, { headers: { Authorization: 'saviojoseph' } }).then(res => dispatch(receiveCurrentPost(res.data)));
