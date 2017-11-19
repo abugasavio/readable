@@ -1,52 +1,86 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Container, Header, Comment, Segment, Button, Icon, Modal } from 'semantic-ui-react';
+import { Container, Header, Comment, Segment, Button, Icon, Modal, Divider } from 'semantic-ui-react';
 import values from 'lodash/values';
 import { Link } from 'react-router-dom';
 import Layout from '../app/Layout';
-import { fetchPost } from './PostActions';
+import { fetchPost, deletePost } from './PostActions';
 import CommentBlock from '../comment/CommentBlock';
 import AddCommentForm from '../comment/AddCommentForm';
 import { fetchComments, createComment } from '../comment/CommentActions';
 
 class PageDetail extends Component {
-  componentDidMount() {
+  state = {
+    modalOpen: false,
+  };
+
+  componentWillMount() {
     const { boundFetchPost, boundFetchComments, match } = this.props;
     boundFetchPost(match.params.id).then(() => boundFetchComments(match.params.id));
   }
 
+  onDeletePost = e => {
+    e.preventDefault();
+    const { match, boundDeletePost } = this.props;
+    boundDeletePost(match.params.id).then(this.props.history.push('/'))
+  };
+
+  closeModal = () => {
+    this.setState({
+      modalOpen: false,
+    });
+  };
+
+  openModal = () => {
+    this.setState({
+      modalOpen: true,
+    });
+  };
+
   render() {
+    const { modalOpen } = this.state;
     const postId = this.props.match.params.id;
     return (
       <Layout>
-        <Container text style={{ marginBottom: '50px' }}>
+        <Container text>
           <Segment clearing basic>
             <Button.Group floated="right">
-              <Button color="green">
+              <Button color="pink">
                 <Icon name="edit" />
                 <Link to={`/edit-post/${postId}`} role={Button}>
                   Edit
                 </Link>
               </Button>
-              <Modal trigger={<Button color='red'><Icon name="remove circle" />Basic Modal</Button>} basic size="small">
+              <Modal
+                open={modalOpen}
+                onClose={this.closeModal}
+                trigger={
+                  <Button color="pink" onClick={this.openModal}>
+                    <Icon name="remove circle" />Delete Post
+                  </Button>
+                }
+                basic
+                size="small"
+              >
                 <Header icon="remove" content="Delete Post" />
                 <Modal.Content>
                   <p>Are you sure you want to delete this post?</p>
                 </Modal.Content>
                 <Modal.Actions>
-                  <Button basic color="red" inverted>
+                  <Button basic color="red" inverted onClick={this.closeModal}>
                     <Icon name="remove" /> No
                   </Button>
-                  <Button color="green" inverted>
+                  <Button color="green" inverted onClick={this.onDeletePost}>
                     <Icon name="checkmark" /> Yes
                   </Button>
                 </Modal.Actions>
               </Modal>
             </Button.Group>
           </Segment>
+          <Divider />
           <Segment clearing basic>
-            <Header as="h1" color="blue" floated="left">
+            <Header as="h1" floated="left">
               {this.props.post.title}
             </Header>
           </Segment>
@@ -67,6 +101,7 @@ class PageDetail extends Component {
 PageDetail.propTypes = {
   boundFetchPost: PropTypes.func.isRequired,
   boundFetchComments: PropTypes.func.isRequired,
+  boundDeletePost: PropTypes.func.isRequired,
   comments: PropTypes.objectOf(PropTypes.objects).isRequired,
   post: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -80,6 +115,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   boundFetchPost: id => dispatch(fetchPost(id)),
   boundFetchComments: id => dispatch(fetchComments(id)),
+  boundDeletePost: id => dispatch(deletePost(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageDetail);

@@ -8,7 +8,7 @@ import './Layout.css';
 
 const Layout = props => (
   <div>
-    <Menu fixed="top">
+    <Menu fixed="top" borderless>
       <Container>
         <Menu.Item as={Link} to="/" header>
           Udacity Readable
@@ -38,7 +38,7 @@ const Layout = props => (
         </Menu.Menu>
       </Container>
     </Menu>
-    <Container text style={{ marginTop: '7em', minHeight: '600px' }}>
+    <Container style={{ marginTop: '7em', minHeight: '600px' }}>
       {props.children}
     </Container>
 

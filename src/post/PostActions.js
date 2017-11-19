@@ -37,15 +37,25 @@ export const createPost = data => dispatch =>
     .catch(err => console.log(err));
 
 export const editPost = (postId, data) => dispatch =>
-    axios
-      .put(
-        `/posts/${postId}`,
-        {
-          title: data.title,
-          body: data.body
-        },
-        { headers: { Authorization: 'saviojoseph' } }
-      ).then(res => console.log(res))
+  axios
+    .put(
+      `/posts/${postId}`,
+      {
+        title: data.title,
+        body: data.body,
+      },
+      { headers: { Authorization: 'saviojoseph' } },
+    )
+    .then(res => console.log(res));
+
+export const deletePost = postId => dispatch =>
+  axios
+    .delete(
+      `/posts/${postId}`,
+      { headers: { Authorization: 'saviojoseph' }}
+    )
+    .then(res => res.data)
+
 
 export const fetchPost = id => dispatch =>
   axios.get(`/posts/${id}`, { headers: { Authorization: 'saviojoseph' } }).then(res => dispatch(receiveCurrentPost(res.data)));
