@@ -1,9 +1,11 @@
+/* eslint jsx-a11y/anchor-is-valid: off */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container, Header, Comment, Segment, Button, Icon, Modal, Divider } from 'semantic-ui-react';
 import values from 'lodash/values';
 import { Link } from 'react-router-dom';
+import orderBy from 'lodash/orderBy';
 import Layout from '../app/Layout';
 import { fetchPost, deletePost } from './PostActions';
 import CommentBlock from '../comment/CommentBlock';
@@ -102,6 +104,7 @@ PageDetail.propTypes = {
   boundFetchPost: PropTypes.func.isRequired,
   boundFetchComments: PropTypes.func.isRequired,
   boundDeletePost: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,  // eslint-disable-line react/forbid-prop-types
   comments: PropTypes.objectOf(PropTypes.objects).isRequired,
   post: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -109,7 +112,7 @@ PageDetail.propTypes = {
 
 const mapStateToProps = state => ({
   post: state.posts.currentPost,
-  comments: values(state.comments),
+  comments: orderBy(values(state.comments), comment => comment.voteScore, 'desc')
 });
 
 const mapDispatchToProps = dispatch => ({
