@@ -10,6 +10,7 @@ import Layout from '../app/Layout';
 import { fetchPost, deletePost, voteUpPost, voteDownPost } from './PostActions';
 import CommentBlock from '../comment/CommentBlock';
 import AddCommentForm from '../comment/AddCommentForm';
+import PageHeader from '../app/PageHeader';
 import { fetchComments, createComment } from '../comment/CommentActions';
 
 class PageDetail extends Component {
@@ -29,13 +30,13 @@ class PageDetail extends Component {
   };
 
   onClickVoteUpButton = () => {
-    const { boundFetchPost, boundVoteUpPost, match } = this.props;
+    const { boundVoteUpPost, match } = this.props;
     boundVoteUpPost(match.params.id)
   }
 
   onClickVoteDownButton = () => {
-    const { boundFetchPost, boundVoteDownPost, match } = this.props;
-    boundVoteDownPost(match.params.id).then(() => boundFetchPost(match.params.id))
+    const { boundVoteDownPost, match } = this.props;
+    boundVoteDownPost(match.params.id)
   }
 
   closeModal = () => {
@@ -56,6 +57,7 @@ class PageDetail extends Component {
     return (
       <Layout>
         <Container text style={{ marginBottom: '20px'}}>
+          <PageHeader icon='book' title={this.props.post.title} />
           <Segment clearing basic>
             <Button.Group floated="right">
               <Button color='pink' onClick={this.onClickVoteUpButton}><Icon name='thumbs outline up'/></Button>
@@ -95,7 +97,6 @@ class PageDetail extends Component {
           <Divider />
           <Segment clearing basic size='massive'>
             <Header as="h1" floated="left">
-              {this.props.post.title}
               <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {this.props.post.voteScore}</Header.Subheader>
             </Header>
           </Segment>

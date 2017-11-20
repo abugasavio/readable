@@ -6,6 +6,7 @@ import orderBy from 'lodash/orderBy';
 import values from 'lodash/values';
 import { Link } from 'react-router-dom';
 import { fetchPosts } from './PostActions';
+import PageHeader from '../app/PageHeader';
 
 class PostList extends Component {
   state = {
@@ -60,10 +61,7 @@ class PostList extends Component {
             <Grid columns={2} style={{ paddingBottom: '2em' }}>
               <Grid.Row>
                 <Grid.Column>
-                  <Header as="h1" color="blue">
-                    <Icon name="check" color="blue" />
-                    <Header.Content>Post List</Header.Content>
-                  </Header>
+                  <PageHeader icon='list' title='Post List' />
                 </Grid.Column>
                 <Grid.Column>
                   <Dropdown options={options} onChange={(event, data) => this.handleSort(event, data)} text="sort" />
