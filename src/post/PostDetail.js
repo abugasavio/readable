@@ -32,14 +32,14 @@ class PageDetail extends Component {
     boundDeletePost(match.params.id).then(this.props.history.push('/'))
   };
 
-  onClickVoteUpButton = () => {
-    const { boundVoteUpPost, match } = this.props;
-    boundVoteUpPost(match.params.id)
+  onClickVoteUpButton = (e) => {
+    const { boundVoteUpPost, match, boundFetchPost } = this.props;
+    boundVoteUpPost(match.params.id).then(() => boundFetchPost(match.params.id))
   }
 
   onClickVoteDownButton = () => {
-    const { boundVoteDownPost, match } = this.props;
-    boundVoteDownPost(match.params.id)
+    const { boundVoteDownPost, match, boundFetchPost } = this.props;
+    boundVoteDownPost(match.params.id).then(() => boundFetchPost(match.params.id))
   }
 
   closeModal = () => {

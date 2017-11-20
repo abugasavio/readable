@@ -15,6 +15,16 @@ export const receiveCurrentPost = post => ({
   post,
 });
 
+export const fetchComments = postId => () => {
+  fetch(`/posts/${postId}/comments`, {
+    method: 'GET',
+    headers: {
+      Authorization: 'saviojoseph',
+    },
+  })
+    .then(res => res.json())
+}
+
 export const fetchPosts = () => dispatch =>
   axios
     .get('/posts', { headers: { Authorization: 'saviojoseph' } })
@@ -60,10 +70,11 @@ export const deletePost = postId => dispatch =>
 
 
 export const fetchPost = id => dispatch =>
+  // TODO: if statement to filter deleted
   axios.get(`/posts/${id}`, { headers: { Authorization: 'saviojoseph' } }).then(res => dispatch(receiveCurrentPost(res.data)));
 
 export const voteUpPost = id => dispatch =>
-    axios.post(`/posts/${id}`, {option: 'upVote'}, { headers: { Authorization: 'saviojoseph' }}).then(res => dispatch({type: UPDATE_POST, post: res.data}))
+    axios.post(`/posts/${id}`, {option: 'upVote'}, { headers: { Authorization: 'saviojoseph' }})
 
 export const voteDownPost = id => dispatch =>
-    axios.post(`/posts/${id}`, {option: 'downVote'}, { headers: { Authorization: 'saviojoseph' }}).then(res => dispatch({type: UPDATE_POST, post: res.data}))
+    axios.post(`/posts/${id}`, {option: 'downVote'}, { headers: { Authorization: 'saviojoseph' }})

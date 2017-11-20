@@ -1,11 +1,11 @@
 /* eslint jsx-a11y/anchor-is-valid: off */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Divider, Grid, Header, Segment, Icon, Dropdown } from 'semantic-ui-react';
+import { Container, Divider, Grid, Header, Segment, Icon, Dropdown, Button } from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
 import values from 'lodash/values';
 import { Link } from 'react-router-dom';
-import { fetchPosts } from './PostActions';
+import { fetchPosts, voteDownPost, voteUpPost } from './PostActions';
 import PageHeader from '../app/PageHeader';
 
 class PostList extends Component {
@@ -15,6 +15,17 @@ class PostList extends Component {
 
   componentDidMount() {
     this.props.boundFetchPosts();
+
+  }
+
+  onClickVoteUpButton = id => {
+    const { boundVoteUpPost, boundFetchPosts } = this.props;
+    this.props.boundVoteUpPost(id).then(() => boundFetchPosts())
+  }
+
+  onClickVoteDownButton = id => {
+    const { boundVoteDownPost, boundFetchPosts } = this.props;
+    boundVoteDownPost(id).then(() => boundFetchPosts())
   }
 
   sortPosts() {
@@ -61,7 +72,7 @@ class PostList extends Component {
             <Grid columns={2} style={{ paddingBottom: '2em' }}>
               <Grid.Row>
                 <Grid.Column>
-                  <PageHeader icon='list' title='Post List' />
+                  <PageHeader icon="list" title="Post List" />
                 </Grid.Column>
                 <Grid.Column>
                   <Dropdown options={options} onChange={(event, data) => this.handleSort(event, data)} text="sort" />
@@ -71,6 +82,14 @@ class PostList extends Component {
 
             {sortedPosts.map(post => (
               <div key={post.id}>
+                <Button.Group>
+                  <Button color="pink" onClick={() => this.onClickVoteUpButton(post.id)}>
+                    <Icon name="thumbs outline up" />
+                  </Button>
+                  <Button color="pink" onClick={() => this.onClickVoteDownButton(post.id)}>
+                    <Icon name="thumbs outline down" />
+                  </Button>
+                </Button.Group>
                 <Header as="h2" color="pink">
                   <Link to={`/post/${post.id}`}>{post.title}</Link>
                   <Header.Subheader>
@@ -92,11 +111,14 @@ class PostList extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     posts: (ownProps.category && values(state.posts.postList).filter(post => post.category === ownProps.category)) || values(state.posts.postList),
+    comments: state.comments
   };
 }
 
 const mapDispatchToProps = dispatch => ({
   boundFetchPosts: () => dispatch(fetchPosts()),
+  boundVoteUpPost: id => dispatch(voteUpPost(id)),
+  boundVoteDownPost: id => dispatch(voteDownPost(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostList);

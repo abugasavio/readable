@@ -23,8 +23,6 @@ function currentPostReducer(state = initialState.currentPost, action) {
   switch (action.type) {
     case RECEIVE_CURRENT_POST:
       return { ...state, ...action.post };
-    case UPDATE_POST:
-      return {...state, ...action.post}
     default:
       return state;
   }
