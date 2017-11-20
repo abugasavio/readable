@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import values from 'lodash/values';
 import startCase from 'lodash/startCase';
-import { Button, Container, Grid, Header, Icon, List, Menu, Segment, Dropdown } from 'semantic-ui-react';
+import { Button, Container, Icon, Menu, Segment, Dropdown } from 'semantic-ui-react';
 import './Layout.css';
 
 const Layout = props => (
