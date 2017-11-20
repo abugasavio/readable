@@ -55,7 +55,7 @@ class PageDetail extends Component {
     const postId = this.props.match.params.id;
     return (
       <Layout>
-        <Container text>
+        <Container text style={{ marginBottom: '20px'}}>
           <Segment clearing basic>
             <Button.Group floated="right">
               <Button color='pink' onClick={this.onClickVoteUpButton}><Icon name='thumbs outline up'/></Button>
