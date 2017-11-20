@@ -93,15 +93,15 @@ class PageDetail extends Component {
             </Button.Group>
           </Segment>
           <Divider />
-          <Segment clearing basic>
+          <Segment clearing basic size='massive'>
             <Header as="h1" floated="left">
               {this.props.post.title}
               <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {this.props.post.voteScore}</Header.Subheader>
             </Header>
           </Segment>
           <p>{this.props.post.body}</p>
-          <Comment.Group>
-            <Header as="h3" dividing>
+          <Comment.Group size='big'>
+            <Header as="h5" dividing>
               Comments
             </Header>
             {this.props.comments.map(comment => <CommentBlock key={comment.id} {...comment} />)}
