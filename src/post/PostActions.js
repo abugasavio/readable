@@ -3,6 +3,7 @@ import uuidv4 from 'uuid/v4';
 
 export const RECEIVE_POST_LIST = 'RECEIVE_POST_LIST';
 export const RECEIVE_CURRENT_POST = 'RECEIVE_CURRENT_POST';
+export const UPDATE_POST = 'UPDATE_POST';
 
 export const receivePostList = posts => ({
   type: RECEIVE_POST_LIST,
@@ -60,8 +61,8 @@ export const deletePost = postId => dispatch =>
 export const fetchPost = id => dispatch =>
   axios.get(`/posts/${id}`, { headers: { Authorization: 'saviojoseph' } }).then(res => dispatch(receiveCurrentPost(res.data)));
 
-export const voteUpPost = id => () =>
-    axios.post(`/posts/${id}`, {option: 'upVote'}, { headers: { Authorization: 'saviojoseph' }}).then(res => res.data)
+export const voteUpPost = id => dispatch =>
+    axios.post(`/posts/${id}`, {option: 'upVote'}, { headers: { Authorization: 'saviojoseph' }}).then(res => dispatch({type: UPDATE_POST, post: res.data}))
 
-export const voteDownPost = id => () =>
-    axios.post(`/posts/${id}`, {option: 'downVote'}, { headers: { Authorization: 'saviojoseph' }}).then(res => res.data)
+export const voteDownPost = id => dispatch =>
+    axios.post(`/posts/${id}`, {option: 'downVote'}, { headers: { Authorization: 'saviojoseph' }}).then(res => dispatch({type: UPDATE_POST, post: res.data}))

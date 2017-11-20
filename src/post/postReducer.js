@@ -1,5 +1,5 @@
 import mapKeys from 'lodash/mapKeys';
-import { RECEIVE_POST_LIST, RECEIVE_CURRENT_POST } from './PostActions';
+import { RECEIVE_POST_LIST, RECEIVE_CURRENT_POST, UPDATE_POST } from './PostActions';
 
 const initialState = {
   posts: {},
@@ -23,6 +23,8 @@ function currentPostReducer(state = initialState.currentPost, action) {
   switch (action.type) {
     case RECEIVE_CURRENT_POST:
       return { ...state, ...action.post };
+    case UPDATE_POST:
+      return {...state, ...action.post}
     default:
       return state;
   }

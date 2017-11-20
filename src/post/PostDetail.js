@@ -30,7 +30,7 @@ class PageDetail extends Component {
 
   onClickVoteUpButton = () => {
     const { boundFetchPost, boundVoteUpPost, match } = this.props;
-    boundVoteUpPost(match.params.id).then(() => boundFetchPost(match.params.id))
+    boundVoteUpPost(match.params.id)
   }
 
   onClickVoteDownButton = () => {
