@@ -18,7 +18,7 @@ export const receiveCurrentPost = post => ({
 export const fetchPosts = () => dispatch =>
   axios
     .get('/posts', { headers: { Authorization: 'saviojoseph' } })
-    .then(res => dispatch(receivePostList(res.data)))
+    .then(res => dispatch(receivePostList(res.data.filter(post => post.deleted === false))))
     .catch(err => console.log(err));
 
 export const createPost = data => dispatch =>
@@ -31,6 +31,7 @@ export const createPost = data => dispatch =>
         title: data.title,
         body: data.body,
         author: data.author,
+        category: data.category
       },
       { headers: { Authorization: 'saviojoseph' } },
     )

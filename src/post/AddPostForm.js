@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Dropdown  } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import values from 'lodash/values';
 import PropTypes from 'prop-types';
 import InlineError from '../app/InlineError';
 
@@ -22,6 +24,12 @@ class AddPostForm extends Component {
     });
   };
 
+  onCategoryChange = (e, data) => {
+    this.setState({
+      data:{...this.state.data, [data.name]: data.value}
+    })
+  }
+
   onSubmit = () => {
     const errors = this.validate(this.state.data);
     this.setState({ errors });
@@ -39,6 +47,7 @@ class AddPostForm extends Component {
 
   render() {
     const { data, errors } = this.state;
+    const categoriesOptions = this.props.categories.map(category => ({'value': category.name, 'text': category.path}));
     return (
       <Form onSubmit={this.onSubmit}>
         <Form.Field error={!!errors.title}>
@@ -65,6 +74,9 @@ class AddPostForm extends Component {
           <input type="text" id="author" placeholder="Author" value={data.author} name="author" onChange={this.onChange} />
           {errors.author && <InlineError text={errors.author} />}
         </Form.Field>
+        <Form.Field>
+        <Dropdown name='category' placeholder='Select Category' fluid search selection options={categoriesOptions} onChange={this.onCategoryChange} />
+        </Form.Field>
         <Button primary>Add Post</Button>
       </Form>
     );
@@ -75,4 +87,8 @@ AddPostForm.propTypes = {
   submit: PropTypes.func.isRequired
 };
 
-export default AddPostForm;
+const mapStateToProps = state => ({
+  categories: values(state.categories)
+})
+
+export default connect(mapStateToProps)(AddPostForm);

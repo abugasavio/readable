@@ -20,7 +20,10 @@ class PageDetail extends Component {
 
   componentWillMount() {
     const { boundFetchPost, boundFetchComments, match } = this.props;
-    boundFetchPost(match.params.id).then(() => boundFetchComments(match.params.id));
+    boundFetchPost(match.params.id)
+      .then(() => boundFetchComments(match.params.id))
+      .catch(() => this.props.history.push('/not-found'));
+
   }
 
   onDeletePost = e => {

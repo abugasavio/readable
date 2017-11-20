@@ -4,6 +4,7 @@ import PostDetail from '../post/PostDetail'
 import PostListPage from './PostListPage';
 import AddPostPage  from './AddPostPage'
 import EditPostPage from './EditPostPage';
+import NotFoundPage from './NotFoundPage';
 
 const App = () => (
 	<div>
@@ -11,7 +12,8 @@ const App = () => (
     <Route path="/post/:id" component={PostDetail} />
     <Route path="/edit-post/:id" component={EditPostPage} />
 		<Route path="/add-post" component={AddPostPage} />
-		<Route path="/category/:category" component={PostListPage} />
+    <Route path="/category/:category" component={PostListPage} />
+    <Route path="/not-found" component={NotFoundPage} />
 	</div>
 )
 
