@@ -59,3 +59,9 @@ export const deletePost = postId => dispatch =>
 
 export const fetchPost = id => dispatch =>
   axios.get(`/posts/${id}`, { headers: { Authorization: 'saviojoseph' } }).then(res => dispatch(receiveCurrentPost(res.data)));
+
+export const voteUpPost = id => () =>
+    axios.post(`/posts/${id}`, {option: 'upVote'}, { headers: { Authorization: 'saviojoseph' }}).then(res => res.data)
+
+export const voteDownPost = id => () =>
+    axios.post(`/posts/${id}`, {option: 'downVote'}, { headers: { Authorization: 'saviojoseph' }}).then(res => res.data)

@@ -7,7 +7,7 @@ import values from 'lodash/values';
 import { Link } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
 import Layout from '../app/Layout';
-import { fetchPost, deletePost } from './PostActions';
+import { fetchPost, deletePost, voteUpPost, voteDownPost } from './PostActions';
 import CommentBlock from '../comment/CommentBlock';
 import AddCommentForm from '../comment/AddCommentForm';
 import { fetchComments, createComment } from '../comment/CommentActions';
@@ -27,6 +27,16 @@ class PageDetail extends Component {
     const { match, boundDeletePost } = this.props;
     boundDeletePost(match.params.id).then(this.props.history.push('/'))
   };
+
+  onClickVoteUpButton = () => {
+    const { boundFetchPost, boundVoteUpPost, match } = this.props;
+    boundVoteUpPost(match.params.id).then(() => boundFetchPost(match.params.id))
+  }
+
+  onClickVoteDownButton = () => {
+    const { boundFetchPost, boundVoteDownPost, match } = this.props;
+    boundVoteDownPost(match.params.id).then(() => boundFetchPost(match.params.id))
+  }
 
   closeModal = () => {
     this.setState({
@@ -48,10 +58,12 @@ class PageDetail extends Component {
         <Container text>
           <Segment clearing basic>
             <Button.Group floated="right">
+              <Button color='pink' onClick={this.onClickVoteUpButton}><Icon name='thumbs outline up'/></Button>
+              <Button color='pink' onClick={this.onClickVoteDownButton}><Icon name='thumbs outline down'/></Button>
               <Button color="pink">
                 <Icon name="edit" />
                 <Link to={`/edit-post/${postId}`} role={Button}>
-                  Edit
+                  Edit Post
                 </Link>
               </Button>
               <Modal
@@ -84,6 +96,7 @@ class PageDetail extends Component {
           <Segment clearing basic>
             <Header as="h1" floated="left">
               {this.props.post.title}
+              <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {this.props.post.voteScore}</Header.Subheader>
             </Header>
           </Segment>
           <p>{this.props.post.body}</p>
@@ -108,6 +121,8 @@ PageDetail.propTypes = {
   comments: PropTypes.objectOf(PropTypes.objects).isRequired,
   post: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  boundVoteDownPost: PropTypes.func.isRequired,
+  boundVoteUpPost: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -118,7 +133,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   boundFetchPost: id => dispatch(fetchPost(id)),
   boundFetchComments: id => dispatch(fetchComments(id)),
-  boundDeletePost: id => dispatch(deletePost(id))
+  boundDeletePost: id => dispatch(deletePost(id)),
+  boundVoteUpPost: id => dispatch(voteUpPost(id)),
+  boundVoteDownPost: id => dispatch(voteDownPost(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageDetail);
