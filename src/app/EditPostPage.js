@@ -29,7 +29,7 @@ class EditPostPage extends React.Component {
 
 
   submit = (postId, data) => {
-	this.props.boundEditPost(postId, data).then(() => this.props.history.push(`/post/${postId}`))
+	this.props.boundEditPost(postId, data).then(() => this.props.history.goBack())
   };
 
 

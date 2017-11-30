@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import PostList from '../post/PostList';
 import Layout from './Layout';
 
-const PostListPage = ({ match }) => (
+const PostListPage = ({ match, history }) => (
   <Layout>
-    <PostList category={match.params.category || null} />
+    <PostList category={match.params.category || null} history={history}/>
   </Layout>
 );
 
