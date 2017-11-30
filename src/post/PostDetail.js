@@ -65,6 +65,12 @@ class PageDetail extends Component {
               <Header>Page Not Found</Header>
             </Segment>
           )}
+          {this.props.post.deleted && (
+            <Segment massive raised>
+              <Header>404</Header>
+              <Header>Page Not Found</Header>
+            </Segment>
+          )}
           {this.props.post.id && (
             <div>
               <PageHeader icon="book" title={this.props.post.title} />
