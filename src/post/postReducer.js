@@ -1,9 +1,10 @@
 import mapKeys from 'lodash/mapKeys';
-import { RECEIVE_POST_LIST, RECEIVE_CURRENT_POST, UPDATE_POST } from './PostActions';
+import { RECEIVE_POST_LIST, RECEIVE_CURRENT_POST, SET_COMMENT_COUNT } from './PostActions';
 
 const initialState = {
   posts: {},
-  currentPost: {}
+  currentPost: {},
+  commentCount: {}
 };
 
 function postListReducer(state = initialState.posts, action) {
@@ -28,10 +29,20 @@ function currentPostReducer(state = initialState.currentPost, action) {
   }
 }
 
+function postCommentCountReducer(state = initialState.commentCount, action) {
+  switch (action.type) {
+    case SET_COMMENT_COUNT:
+      return {...state, ...action.payload}
+    default:
+      return state
+  }
+}
+
 
 const postReducer = (state = initialState, action) => ({
   postList: postListReducer(state.posts, action),
   currentPost: currentPostReducer(state.currentPost, action),
+  postCommentCount: postCommentCountReducer(state.commentCount, action)
 });
 
 export default postReducer;

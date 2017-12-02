@@ -117,7 +117,9 @@ class PageDetail extends Component {
               <Divider />
               <Segment clearing basic size="massive">
                 <Header as="h1" floated="left">
-                  <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {this.props.post.voteScore}</Header.Subheader>
+                  <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {this.props.post.voteScore}
+                  Comment Count: {this.props.comments.length}
+                  </Header.Subheader>
                 </Header>
               </Segment>
               <p>{this.props.post.body}</p>

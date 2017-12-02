@@ -1,12 +1,12 @@
 /* eslint jsx-a11y/anchor-is-valid: off */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Divider, Grid, Header, Segment, Icon, Dropdown, Button, Modal } from 'semantic-ui-react';
+import { Container, Grid, Segment, Dropdown } from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
 import values from 'lodash/values';
-import { Link } from 'react-router-dom';
-import { fetchPosts, voteDownPost, voteUpPost, deletePost } from './PostActions';
+import { fetchPosts } from './PostActions';
 import PageHeader from '../app/PageHeader';
+import PostBlock from './PostBlock';
 
 class PostList extends Component {
   state = {
@@ -14,40 +14,9 @@ class PostList extends Component {
     modalOpen: false
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.boundFetchPosts();
   }
-
-  onClickVoteUpButton = id => {
-    const { boundVoteUpPost, boundFetchPosts } = this.props;
-    this.props.boundVoteUpPost(id).then(() => boundFetchPosts());
-  };
-
-  onClickVoteDownButton = id => {
-    const { boundVoteDownPost, boundFetchPosts } = this.props;
-    boundVoteDownPost(id).then(() => boundFetchPosts());
-  };
-
-  onDeletePost = (e, id) => {
-    e.preventDefault();
-    const { boundDeletePost } = this.props;
-    boundDeletePost(id)
-      .then(this.setState({modalOpen: false}))
-      .then(this.props.boundFetchPosts())
-  };
-
-  closeModal = () => {
-    this.setState({
-      modalOpen: false,
-    });
-  };
-
-  openModal = () => {
-    this.setState({
-      modalOpen: true,
-    });
-  };
-
 
 
   sortPosts() {
@@ -101,58 +70,7 @@ class PostList extends Component {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-
-            {sortedPosts.map(post => (
-              <div key={post.id}>
-                <Button.Group>
-                  <Button color="pink" onClick={() => this.onClickVoteUpButton(post.id)}>
-                    <Icon name="thumbs outline up" />
-                  </Button>
-                  <Button color="pink" onClick={() => this.onClickVoteDownButton(post.id)}>
-                    <Icon name="thumbs outline down" />
-                  </Button>
-                  <Button color="pink">
-                    <Icon name="edit" />
-                    <Link to={`/edit-post/${post.id}`} role={Button}>
-                      Edit Post
-                    </Link>
-                  </Button>
-                  <Modal
-                    open={this.state.modalOpen}
-                    onClose={this.closeModal}
-                    trigger={
-                      <Button color="pink" onClick={this.openModal}>
-                        <Icon name="remove circle" />Delete Post
-                      </Button>
-                    }
-                    basic
-                    size="small"
-                  >
-                    <Header icon="remove" content="Delete Post" />
-                    <Modal.Content>
-                      <p>Are you sure you want to delete this post?</p>
-                    </Modal.Content>
-                    <Modal.Actions>
-                      <Button basic color="red" inverted onClick={this.closeModal}>
-                        <Icon name="remove" /> No
-                      </Button>
-                      <Button color="green" inverted onClick={(e) => this.onDeletePost(e,post.id)}>
-                        <Icon name="checkmark" /> Yes
-                      </Button>
-                    </Modal.Actions>
-                  </Modal>
-                </Button.Group>
-                <Header as="h2" color="pink">
-                  <Link to={`/post/${post.id}`}>{post.title}</Link>
-                  <Header.Subheader>
-                    Written by {post.author} on {Date(post.timestamp)}
-                  </Header.Subheader>
-                  <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {post.voteScore}</Header.Subheader>
-                </Header>
-                <p style={{ fontSize: '1.33em' }}>{post.body}</p>
-                <Divider />
-              </div>
-            ))}
+            {sortedPosts.map(post => <PostBlock post={post}/>)}
           </Container>
         </Segment>
       </div>
@@ -168,10 +86,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  boundFetchPosts: () => dispatch(fetchPosts()),
-  boundVoteUpPost: id => dispatch(voteUpPost(id)),
-  boundVoteDownPost: id => dispatch(voteDownPost(id)),
-  boundDeletePost: id => dispatch(deletePost(id))
+  boundFetchPosts: () => dispatch(fetchPosts())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostList);

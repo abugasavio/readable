@@ -4,6 +4,7 @@ import uuidv4 from 'uuid/v4';
 export const RECEIVE_POST_LIST = 'RECEIVE_POST_LIST';
 export const RECEIVE_CURRENT_POST = 'RECEIVE_CURRENT_POST';
 export const UPDATE_POST = 'UPDATE_POST';
+export const SET_COMMENT_COUNT = 'SET_COMMENT_COUNT';
 
 export const receivePostList = posts => ({
   type: RECEIVE_POST_LIST,
@@ -15,15 +16,35 @@ export const receiveCurrentPost = post => ({
   post,
 });
 
-export const fetchComments = postId => () => {
-  fetch(`/posts/${postId}/comments`, {
+export const fetchComments = postId => () =>  fetch(`/posts/${postId}/comments`, {
     method: 'GET',
     headers: {
       Authorization: 'saviojoseph',
     },
   })
     .then(res => res.json())
-}
+
+export const updateCommentCount = payload => ({
+  type: SET_COMMENT_COUNT,
+  payload,
+})
+
+// export const fetchCommentCount = postId => dispatch =>
+//   fetch(`/posts/${postId}/comments`, {
+//     method: 'GET',
+//     headers: {
+//       Authorization: 'saviojoseph',
+//     },
+//   })
+//   .then(res => res.json())
+//   .then(comments => dispatch(updateCommentCount({postId: postId, commentCount: comments.length})))
+
+export const fetchCommentCount = postId => dispatch =>
+  axios
+  .get(`/posts/${postId}/comments`, { headers: { Authorization: 'saviojoseph' }})
+  .then(res => console.log(postId, res.data))
+  //.then(res => dispatch(updateCommentCount({postId: postId, commentCount: res.data.length})))
+
 
 export const fetchPosts = () => dispatch =>
   axios
