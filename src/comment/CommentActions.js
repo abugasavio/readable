@@ -3,6 +3,8 @@ import uuidv4 from 'uuid/v4';
 
 export const RECEIVE_POST_COMMENTS = 'RECEIVE_POST_COMMENTS';
 export const UPDATE_POST_COMMENT = 'UPDATE_POST_COMMENT'
+export const DELETE_POST_COMMENT = 'DELETE_POST_COMMENT'
+
 
 export const receivePostComments = comments => ({
   type: RECEIVE_POST_COMMENTS,
@@ -41,3 +43,12 @@ export const voteUpComment = id => dispatch =>
 
 export const voteDownComment = id => dispatch =>
     axios.post(`/comments/${id}`, {option: 'downVote'}, { headers: { Authorization: 'saviojoseph' }}).then(res => dispatch({type: UPDATE_POST_COMMENT, comment: res.data}))
+
+export const deleteComment = commentId => dispatch =>
+axios
+  .delete(
+    `/comments/${commentId}`,
+    { headers: { Authorization: 'saviojoseph' }}
+  )
+  .then(res => res.data)
+  .then(data => dispatch({type: DELETE_POST_COMMENT, id: data.id }))

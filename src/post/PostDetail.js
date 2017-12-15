@@ -11,14 +11,14 @@ import { fetchPost, deletePost, voteUpPost, voteDownPost } from './PostActions';
 import CommentBlock from '../comment/CommentBlock';
 import AddCommentForm from '../comment/AddCommentForm';
 import PageHeader from '../app/PageHeader';
-import { fetchComments, createComment } from '../comment/CommentActions';
+import { fetchComments, createComment, deleteComment } from '../comment/CommentActions';
 
 class PageDetail extends Component {
   state = {
-    modalOpen: false,
+    modalOpen: false
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { boundFetchPost, boundFetchComments, match } = this.props;
     boundFetchPost(match.params.id)
       .then(() => boundFetchComments(match.params.id))
@@ -29,6 +29,11 @@ class PageDetail extends Component {
     const { match, boundDeletePost } = this.props;
     boundDeletePost(match.params.id).then(this.props.history.push('/'));
   };
+
+  onDeleteComment = id => {
+    this.props.boundDeleteComment(id)
+    this.props.boundFetchComments(this.props.match.params.id)
+  }
 
   onClickVoteUpButton = e => {
     const { boundVoteUpPost, match, boundFetchPost } = this.props;
@@ -55,7 +60,6 @@ class PageDetail extends Component {
   render() {
     const { modalOpen } = this.state;
     const postId = this.props.match.params.id;
-    console.log(this.props.post);
     return (
       <Layout>
         <Container text style={{ marginBottom: '20px' }}>
@@ -127,7 +131,7 @@ class PageDetail extends Component {
                 <Header as="h5" dividing>
                   Comments
                 </Header>
-                {this.props.comments.map(comment => <CommentBlock key={comment.id} {...comment} />)}
+                {this.props.comments.map(comment => <CommentBlock onDeleteComment={this.onDeleteComment} key={comment.id} {...comment} postId={postId} />)}
                 <AddCommentForm submit={createComment} postId={this.props.match.params.id} />
               </Comment.Group>
             </div>
@@ -161,6 +165,7 @@ const mapDispatchToProps = dispatch => ({
   boundDeletePost: id => dispatch(deletePost(id)),
   boundVoteUpPost: id => dispatch(voteUpPost(id)),
   boundVoteDownPost: id => dispatch(voteDownPost(id)),
+  boundDeleteComment: id => dispatch(deleteComment(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageDetail);

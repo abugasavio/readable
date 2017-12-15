@@ -5,3 +5,5 @@ button > a{
 button > a:hover{
   color: #fff;
 }
+
+.hidden { display:none; }
