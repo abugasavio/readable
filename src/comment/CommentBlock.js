@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Comment, Button, Icon, Header, Modal } from 'semantic-ui-react';
 import { voteUpComment, voteDownComment, fetchComments, deleteComment } from './CommentActions';
 
@@ -58,6 +59,12 @@ class CommentBlock extends Component {
             <Button color="pink" onClick={() => this.onClickVoteDownButton(id)}>
               <Icon name="thumbs outline down" />
             </Button>
+            <Button color="pink">
+            <Icon name="edit" />
+            <Link to={`/edit-comment/${id}`} role={Button}>
+              Edit Comment
+            </Link>
+          </Button>
             <Modal
               open={modalOpen}
               onClose={this.closeModal}

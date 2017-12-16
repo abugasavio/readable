@@ -51,7 +51,6 @@ class EditPostPage extends React.Component {
 EditPostPage.propTypes = {
   boundEditPost: PropTypes.func.isRequired,
   boundFetchPost: PropTypes.func.isRequired,
-
   post: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   history: PropTypes.object.isRequired // eslint-disable-line react/forbid-prop-types

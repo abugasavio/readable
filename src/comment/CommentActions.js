@@ -52,3 +52,16 @@ axios
   )
   .then(res => res.data)
   .then(data => dispatch({type: DELETE_POST_COMMENT, id: data.id }))
+
+
+export const editComment = (commentId, data) => dispatch =>
+{
+  console.log(data)
+  return axios({
+      url: `/comments/${commentId}`,
+      method: 'put',
+      headers: { Authorization: 'saviojoseph' },
+      data
+    })
+    .then(res => res.data)
+  }

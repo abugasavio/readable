@@ -16,7 +16,7 @@ class PostBlock extends Component {
 
   onClickVoteUpButton = id => {
     const { boundVoteUpPost, boundFetchPosts } = this.props;
-    this.props.boundVoteUpPost(id).then(() => boundFetchPosts());
+    boundVoteUpPost(id).then(() => boundFetchPosts());
   };
 
   onClickVoteDownButton = id => {
