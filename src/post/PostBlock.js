@@ -88,7 +88,7 @@ class PostBlock extends Component {
           </Modal>
         </Button.Group>
         <Header as="h2" color="pink">
-          <Link to={`/post/${post.id}`}>{post.title}</Link>
+          <Link to={`/category/${post.id}`}>{post.title}</Link>
           <Header.Subheader>
             Written by {post.author} on {Date(post.timestamp)}
           </Header.Subheader>
