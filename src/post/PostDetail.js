@@ -7,7 +7,7 @@ import values from 'lodash/values';
 import { Link } from 'react-router-dom';
 import orderBy from 'lodash/orderBy';
 import Layout from '../app/Layout';
-import { fetchPost, deletePost, voteUpPost, voteDownPost } from './PostActions';
+import { fetchPost, fetchPosts, deletePost, voteUpPost, voteDownPost } from './PostActions';
 import CommentBlock from '../comment/CommentBlock';
 import AddCommentForm from '../comment/AddCommentForm';
 import PageHeader from '../app/PageHeader';
@@ -18,6 +18,12 @@ class PageDetail extends Component {
     modalOpen: false
   };
 
+  componentDidMount() {
+    const { boundFetchPost, boundFetchComments, match } = this.props;
+    boundFetchPost(match.params.id)
+      .then(() => boundFetchComments(match.params.id))
+  }
+
   onDeletePost = e => {
     e.preventDefault();
     const { match, boundDeletePost } = this.props;
@@ -26,7 +32,7 @@ class PageDetail extends Component {
 
   onDeleteComment = id => {
     this.props.boundDeleteComment(id)
-    this.props.boundFetchComments(this.props.match.params.id)
+    // this.props.boundFetchComments(this.props.match.params.id)
   }
 
   onClickVoteUpButton = e => {
@@ -34,7 +40,7 @@ class PageDetail extends Component {
     boundVoteUpPost(match.params.id).then(() => boundFetchPost(match.params.id));
   };
 
-  onClickVoteDownButton = () => {
+  onClickVoteDownButton = e => {
     const { boundVoteDownPost, match, boundFetchPost } = this.props;
     boundVoteDownPost(match.params.id).then(() => boundFetchPost(match.params.id));
   };
@@ -58,15 +64,21 @@ class PageDetail extends Component {
     return (
       <Layout>
         <Container text style={{ marginBottom: '20px' }}>
-          {!post && (
-            <Segment massive raised>
-              <Header>404</Header>
-              <Header>Page Not Found</Header>
-            </Segment>
-          )}
-          {post && post.id && (
+        {!this.props.post.id && (
+          <Segment massive raised>
+            <Header>404</Header>
+            <Header>Page Not Found</Header>
+          </Segment>
+        )}
+        {this.props.post.deleted && (
+          <Segment massive raised>
+            <Header>404</Header>
+            <Header>Page Not Found</Header>
+          </Segment>
+        )}
+          {this.props.post && this.props.post.id && (
             <div>
-              <PageHeader icon="book" title={post.title} />
+              <PageHeader icon="book" title={this.props.post.title} />
               <Segment clearing basic>
                 <Button.Group floated="right">
                   <Button color="pink" onClick={this.onClickVoteUpButton}>
@@ -110,12 +122,12 @@ class PageDetail extends Component {
               <Divider />
               <Segment clearing basic size="massive">
                 <Header as="h1" floated="left">
-                  <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {post.voteScore}
+                  <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {this.props.post.voteScore}
                   Comment Count: {this.props.comments.length}
                   </Header.Subheader>
                 </Header>
               </Segment>
-              <p>{post.body}</p>
+              <p>{this.props.post.body}</p>
               <Comment.Group size="big">
                 <Header as="h5" dividing>
                   Comments
@@ -145,10 +157,12 @@ PageDetail.propTypes = {
 
 const mapStateToProps = state => ({
   posts: state.posts.postList,
+  post: state.posts.currentPost,
   comments: orderBy(values(state.comments), comment => comment.voteScore, 'desc'),
 });
 
 const mapDispatchToProps = dispatch => ({
+  boundFetchPosts: () => dispatch(fetchPosts()),
   boundFetchPost: id => dispatch(fetchPost(id)),
   boundFetchComments: id => dispatch(fetchComments(id)),
   boundDeletePost: id => dispatch(deletePost(id)),
