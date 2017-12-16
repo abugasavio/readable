@@ -88,10 +88,10 @@ export const deletePost = postId => dispatch =>
       { headers: { Authorization: 'saviojoseph' }}
     )
     .then(res => res.data)
+    .then(() => dispatch({type:RECEIVE_CURRENT_POST, post: {}}))
 
 
 export const fetchPost = id => dispatch =>
-  // TODO: if statement to filter deleted
   axios.get(`/posts/${id}`, { headers: { Authorization: 'saviojoseph' } }).then(res => dispatch(receiveCurrentPost(res.data)));
 
 export const voteUpPost = id => dispatch =>

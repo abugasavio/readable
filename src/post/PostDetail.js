@@ -18,12 +18,6 @@ class PageDetail extends Component {
     modalOpen: false
   };
 
-  componentDidMount() {
-    const { boundFetchPost, boundFetchComments, match } = this.props;
-    boundFetchPost(match.params.id)
-      .then(() => boundFetchComments(match.params.id))
-  }
-
   onDeletePost = e => {
     e.preventDefault();
     const { match, boundDeletePost } = this.props;
@@ -60,24 +54,19 @@ class PageDetail extends Component {
   render() {
     const { modalOpen } = this.state;
     const postId = this.props.match.params.id;
+    const post = this.props.posts[postId]
     return (
       <Layout>
         <Container text style={{ marginBottom: '20px' }}>
-          {!this.props.post.id && (
+          {!post && (
             <Segment massive raised>
               <Header>404</Header>
               <Header>Page Not Found</Header>
             </Segment>
           )}
-          {this.props.post.deleted && (
-            <Segment massive raised>
-              <Header>404</Header>
-              <Header>Page Not Found</Header>
-            </Segment>
-          )}
-          {this.props.post.id && (
+          {post && post.id && (
             <div>
-              <PageHeader icon="book" title={this.props.post.title} />
+              <PageHeader icon="book" title={post.title} />
               <Segment clearing basic>
                 <Button.Group floated="right">
                   <Button color="pink" onClick={this.onClickVoteUpButton}>
@@ -121,18 +110,18 @@ class PageDetail extends Component {
               <Divider />
               <Segment clearing basic size="massive">
                 <Header as="h1" floated="left">
-                  <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {this.props.post.voteScore}
+                  <Header.Subheader style={{ paddingTop: '2px' }}>Votes Received: {post.voteScore}
                   Comment Count: {this.props.comments.length}
                   </Header.Subheader>
                 </Header>
               </Segment>
-              <p>{this.props.post.body}</p>
+              <p>{post.body}</p>
               <Comment.Group size="big">
                 <Header as="h5" dividing>
                   Comments
                 </Header>
                 {this.props.comments.map(comment => <CommentBlock onDeleteComment={this.onDeleteComment} key={comment.id} {...comment} postId={postId} />)}
-                <AddCommentForm submit={createComment} postId={this.props.match.params.id} />
+                <AddCommentForm submit={createComment} postId={postId} />
               </Comment.Group>
             </div>
           )}
@@ -155,7 +144,7 @@ PageDetail.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  post: state.posts.currentPost,
+  posts: state.posts.postList,
   comments: orderBy(values(state.comments), comment => comment.voteScore, 'desc'),
 });
 
